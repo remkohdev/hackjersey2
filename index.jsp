@@ -13,22 +13,79 @@
 <h1>HackJersey 2.0</1>
 <h2>Town vs Town Insights</h2>
 <sql:query var="rs" dataSource="jdbc/TestDB">
-select id, town, year from crime
+SELECT DISTINCT(town) AS town FROM crime ORDER BY town ASC;
 </sql:query>
-<c:forEach var="row" items="${rs.rows}">
-    Town: ${row.town}, Year: ${row.year}<br/>
-</c:forEach>
+<sql:query var="rs2" dataSource="jdbc/TestDB">
+SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'test' AND TABLE_NAME = 'crime'
+AND COLUMN_NAME != 'id' AND COLUMN_NAME != 'year1' AND COLUMN_NAME != 'town'  AND COLUMN_NAME != 'population';
+</sql:query>
 
 <form name="townselectionform" action="page2.jsp" method="post" >
-<input name="town1" type="hidden" value="Trenton, New Jersey"/>
-<input type="submit" value="compare" />
+<table>
+  <tr>
+    <td colspan="2">
+      <select name="compareby">
+        <option value="">Compare towns by...</option>
+		<option value="crime">crime</option>
+		<option value="education">education</option>
+		<option value="income">income</option>
+		<option value="race">race</option>
+      </select> 
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <select name="comparebytype" multiple>
+        <option value="">Show type...</option>
+		<c:forEach var="row" items="${rs2.rows}">
+		    <option value="<c:out value="${row.COLUMN_NAME}"/>"><c:out value="${row.COLUMN_NAME}"/></option>
+        </c:forEach>
+      </select> 
+    </td>
+  </tr>
+   <tr>
+    <td colspan="2">
+      <select name="towns" multiple>
+        <option value="">Select towns...</option>
+		<c:forEach var="row" items="${rs.rows}">
+		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
+        </c:forEach>
+      </select> 
+    </td>
+  </tr>   
+  
+  <tr>
+    <td>
+      <select name="town1">
+        <option value="">Select town1...</option>
+		<c:forEach var="row" items="${rs.rows}">
+		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
+        </c:forEach>
+      </select> 
+    </td>
+    
+    <td>
+      <select name="town2">
+        <option value="">Select town2...</option>
+		<c:forEach var="row" items="${rs.rows}">
+		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
+        </c:forEach>
+      </select> 
+    </td>
+  </tr>
+
+  <tr>
+	<td colspan="2">
+	  <input type="submit" value="compare" />
+	</td>
+  </tr>
+
+</table>
 </form>
-
-
 
 <script type="text/javascript">
 $(window).load(function() {
-	d3.select("body").style("background-color", "green");
+	d3.select("body").style("background-color", "yellow");
 	d3.selectAll("p")
     .data([23, 42])
     .style("font-size", function(d) { return d + "px"; });

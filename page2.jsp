@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
 <title>HackJersey2 - Town vs Town Insights</title>
@@ -30,64 +30,58 @@ body {
 
 <body>
 <h1>HackJersey 2.0</1>
-<h2>Town vs Town Insights</h2>
-
+<h2>Town by Town Insights</h2>
 <%
 String compareby=request.getParameter("compareby");
-String comparebytypes=request.getParameter("comparebytype");
-String town1=request.getParameter("town1");
-String town2=request.getParameter("town2");
 %>
-comparebytypes=<%= comparebytypes %><br>
-<br>
-Compare <i><%= town1 %></i> to <i><%= town2 %></i> by <b><%= compareby %></b><br>
-
-<sql:query var="rstown1" dataSource="jdbc/TestDB">
-select id, town, year1, violentcrime, murder, rape, robbery, assault,
-propertycrime, burglary, larcenytheft, motorvehicletheft, arson from crime
-where town = "<%= town1 %>" 
-</sql:query>
-<sql:query var="rstown2" dataSource="jdbc/TestDB">
-select id, town, year1, violentcrime, murder, rape, robbery, assault,
-propertycrime, burglary, larcenytheft, motorvehicletheft, arson from crime
-where town = "<%= town2 %>" 
-</sql:query>
-
-<div id="viz1"></div>
-<div id="viz2"></div>
+<c:set var="towns" value="${paramValues['towns']}" />
+<c:set var="comparebytypes" value="${paramValues['comparebytypes']}" />
+<c:set var="columnsLength" value="${fn:length(comparebytypes)}"/>
+<c:forEach var="comparebytype" items="${comparebytypes}" varStatus="loop">
+	<c:choose>
+		<c:when test="${loop.index == 0}">
+			<c:set var="columns" value="${comparebytype}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="columns" value="${columns}, ${comparebytype}"/>
+		</c:otherwise>
+	</c:choose>
+</c:forEach>
+types: <c:out value="${columns}"/></br>
+<div id="viz"></div>
 
 <script type="text/javascript">
 $(window).load(function() {
 	
 	d3.select("body").style("background-color", "yellow");
+	var viz = d3.select("div#viz");
 	
-	var div1 = d3.select("div#viz1");
-	var data1 = [
-	    <c:forEach var="row1" items="${rstown1.rows}">
-			{date:${row1.year1}, violentcrime:${row1.violentcrime}, murder:${row1.murder}, rape:${row1.rape}, 
-				robbery:${row1.robbery}, assault:${row1.assault}, propertycrime:${row1.propertycrime},
-				burglary:${row1.burglary}, larcenytheft:${row1.larcenytheft}, motorvehicletheft:${row1.motorvehicletheft},
-				arson:${row1.arson} },
-		</c:forEach>        			
-	];
-	addCrimeGraph(data1, div1);
-	
-	var div2 = d3.select("div#viz2");
-	var data2 = [
-   	    <c:forEach var="row2" items="${rstown2.rows}">
-   			{date:${row2.year1}, violentcrime:${row2.violentcrime}, murder:${row2.murder}, rape:${row2.rape}, 
-   				robbery:${row2.robbery}, assault:${row2.assault}, propertycrime:${row2.propertycrime},
-   				burglary:${row2.burglary}, larcenytheft:${row2.larcenytheft}, motorvehicletheft:${row2.motorvehicletheft},
-   				arson:${row2.arson} },
-   		</c:forEach>        			
-   	];
-	addCrimeGraph(data2, div2);
+	<c:forEach var="town" items="${towns}">
+	    <c:set var="population" value=""/>
+		<sql:query var="rstown" dataSource="jdbc/TestDB">
+			select id, population, town, year1, violentcrime, murder, rape, robbery, assault,
+			propertycrime, burglary, larcenytheft, motorvehicletheft, arson from crime
+			where town = "<c:out value="${town}"/> "  
+		</sql:query>
+		var div1 = viz.append("div");
+		var data1 = [
+		    <c:forEach var="row1" items="${rstown.rows}">
+		    	<c:set var="population" value="${row1.population}"/>
+		        {date:${row1.year1}, violentcrime:${row1.violentcrime}, murder:${row1.murder}, rape:${row1.rape}, 
+					robbery:${row1.robbery}, assault:${row1.assault}, propertycrime:${row1.propertycrime},
+					burglary:${row1.burglary}, larcenytheft:${row1.larcenytheft}, motorvehicletheft:${row1.motorvehicletheft},
+					arson:${row1.arson} },
+			</c:forEach>        			
+		];
+		addCrimeGraph(data1, div1, "<c:out value="${town}" /> (pop.<c:out value="${population}" />)");
+		
+	</c:forEach>
 	
 });
 
-function addCrimeGraph(data1, div1){
+function addCrimeGraph(data1, div1, title){
 	
-	var margin = {top: 20, right: 80, bottom: 30, left: 50},
+	var margin = {top: 50, right: 80, bottom: 30, left: 50},
     width = 660 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 	
@@ -119,7 +113,14 @@ function addCrimeGraph(data1, div1){
 	    .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+	svg.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .style("text-decoration", "underline")  
+    .text(title);
+	
     color.domain(d3.keys(data1[0]).filter(function(key) { return key !== "date"; }));
 	data1.forEach(function(d) {
 	  //d.date = parseDate(d.date);
@@ -158,14 +159,18 @@ function addCrimeGraph(data1, div1){
 	
 	crime.append("path")
 	    .attr("class", "line")
-	    .attr("d", function(d) { return line(d.values); })
+	    .attr("d", function(d) { 
+	    	return line(d.values); 
+	    })
 	    .style("stroke", function(d) { return color(d.name); });
+	
 	crime.append("text")
 	    .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
 	    .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
 	    .attr("x", 3)
 	    .attr("dy", ".35em")
 	    .text(function(d) { return d.name; });
+
 	
 }
 </script>

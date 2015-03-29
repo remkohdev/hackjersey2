@@ -21,12 +21,12 @@ AND COLUMN_NAME != 'id' AND COLUMN_NAME != 'year1' AND COLUMN_NAME != 'town'  AN
 </sql:query>
 
 <form name="townselectionform" action="page2.jsp" method="post" >
+
 <table>
   <tr>
     <td colspan="2">
-      <select name="compareby">
-        <option value="">Compare towns by...</option>
-		<option value="crime">crime</option>
+      <select name="compareby" style="width:300px">
+        <option value="crime">crime</option>
 		<option value="education">education</option>
 		<option value="income">income</option>
 		<option value="race">race</option>
@@ -35,7 +35,7 @@ AND COLUMN_NAME != 'id' AND COLUMN_NAME != 'year1' AND COLUMN_NAME != 'town'  AN
   </tr>
   <tr>
     <td colspan="2">
-      <select name="comparebytype" multiple>
+      <select name="comparebytypes" multiple="multiple" size="11" style="width:300px">
         <option value="">Show type...</option>
 		<c:forEach var="row" items="${rs2.rows}">
 		    <option value="<c:out value="${row.COLUMN_NAME}"/>"><c:out value="${row.COLUMN_NAME}"/></option>
@@ -45,7 +45,7 @@ AND COLUMN_NAME != 'id' AND COLUMN_NAME != 'year1' AND COLUMN_NAME != 'town'  AN
   </tr>
    <tr>
     <td colspan="2">
-      <select name="towns" multiple>
+      <select name="towns" multiple="multiple" size="20" style="width:300px">
         <option value="">Select towns...</option>
 		<c:forEach var="row" items="${rs.rows}">
 		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
@@ -53,26 +53,6 @@ AND COLUMN_NAME != 'id' AND COLUMN_NAME != 'year1' AND COLUMN_NAME != 'town'  AN
       </select> 
     </td>
   </tr>   
-  
-  <tr>
-    <td>
-      <select name="town1">
-        <option value="">Select town1...</option>
-		<c:forEach var="row" items="${rs.rows}">
-		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
-        </c:forEach>
-      </select> 
-    </td>
-    
-    <td>
-      <select name="town2">
-        <option value="">Select town2...</option>
-		<c:forEach var="row" items="${rs.rows}">
-		    <option value="<c:out value="${row.town}"/>"><c:out value="${row.town}"/></option>
-        </c:forEach>
-      </select> 
-    </td>
-  </tr>
 
   <tr>
 	<td colspan="2">

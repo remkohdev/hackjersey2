@@ -1,0 +1,53 @@
+<div align="center">
+<div style="overflow:auto;position:relative;width:705px;height:49px;top:17px;left:-640px;margin-right:-705px;margin-bottom:-49px;">
+<div align="center"><font face="magneto" color="Blue"></font> </div>
+</div>
+<div style="overflow:auto;position:relative;width:121px;height:248px;top:80px;left:-380px;margin-right:-121px;margin-bottom:-248px;">
+<font face="century gothic" color="Blue">Pick a Town</font><p><font size="2">
+<a href="file:///C:/Users/TaliBird/Desktop/Aberdeen.html">Aberdeen township</a> <p> 
+<a href="file:///C:/Users/TaliBird/Desktop/Absecon.html">Absecon city</a> <p> 
+<a href="file:///C:/Users/TaliBird/Desktop/Alexandria.html">Alexandria township</a> <p> 
+<a href="file:///C:/Users/TaliBird/Desktop/Allamuchy.html">Allamuchy township</a> <p> 
+<a href="file:///C:/Users/TaliBird/Desktop/Allendale.html">Allendale borough</a> <p> 
+<a href="file:///C:/Users/TaliBird/Desktop/Allentown.html">Allentown borough</a> <p></font>
+</div>
+<div style="overflow:auto;position:relative;width:120px;height:248px;top:79px;left:260px;margin-right:-120px;margin-bottom:-248px;">
+<font face="century gothic" color="Blue">Compare</font><p><font size="2">
+<a href="#page1">Aberdeen township</a> <p>
+<a href="#page2">Absecon city</a><p>
+<a href="#page3">Alexandria Township</a> <p>
+<a href="#page4">Allamuchy Township</a> <p> 
+<a href="#page5">Allendale Borough</a> <p>
+Allentown Borough </font>
+</font>
+</div>
+
+
+
+
+
+<div style="overflow:auto;position:relative;width:180px;height:248px;top:81px;left:-200px;margin-right:-180px;margin-bottom:-248px;">
+Allentown borough <p>STATISTICS <p> STATISTICS <p> STATISTICS <p> TALIA WAS HERE
+</div>
+<div style="overflow:auto;position:relative;width:189px;height:247px;top:81px;left:20px;margin-right:-189px;margin-bottom:-247px;">
+<a name="page1">Aberdeen township<p> ABERDEEN STATISTICS</a> <p>
+<a name="page2">Absecon city<p> ABSECON STATISTICS</a> <p>
+<a name="page3">Alexandria township<p> ALEXANDRIA STATISTICS</a> <p>
+<a name="page4">Allamuchy township<p> ALLAMUCHY STATISTICS</a> <p>
+<a name="page5">Allendale borough<p> ALLENDALE STATISTICS</a> <p>
+</div>
+
+
+
+
+<div style="overflow:auto;position:relative;width:71px;height:24px;top:341px;left:-35px;margin-right:-71px;margin-bottom:-24px;">
+<div align="center"><font size="4"><b><i>Go</i></b></font></div>
+</div>
+<img src="http://i143.photobucket.com/albums/r137/x_spazzeh/EasyTownVsTown4.png" alt=""></div>
+
+
+<style>
+body {
+	background: url("http://i143.photobucket.com/albums/r137/x_spazzeh/BackgroundTownVSTown.png") fixed repeat right bottom;
+}
+</style>
